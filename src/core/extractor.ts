@@ -1,9 +1,21 @@
-import { JSDOM } from 'jsdom';
+import { JSDOM, VirtualConsole } from 'jsdom';
 import { Readability } from '@mozilla/readability';
 import type { ExtractOptions, ExtractedContent, PageMetadata } from '../types/index.js';
 import { ExtractionError } from '../types/index.js';
 
 export class ContentExtractor {
+  /**
+   * Create a virtual console that suppresses CSS errors
+   */
+  private createVirtualConsole(): VirtualConsole {
+    const virtualConsole = new VirtualConsole();
+    // Suppress CSS parsing errors (they don't affect content extraction)
+    virtualConsole.on('error', () => {
+      // Ignore errors
+    });
+    return virtualConsole;
+  }
+
   /**
    * Extract content from HTML
    */
@@ -11,7 +23,10 @@ export class ContentExtractor {
     const { useReadability, selector } = options;
 
     try {
-      const dom = new JSDOM(html, { url });
+      const dom = new JSDOM(html, {
+        url,
+        virtualConsole: this.createVirtualConsole()
+      });
       const document = dom.window.document;
 
       // 提取元数据
@@ -87,7 +102,10 @@ export class ContentExtractor {
    */
   extractMetadata(html: string, url: string): PageMetadata {
     try {
-      const dom = new JSDOM(html, { url });
+      const dom = new JSDOM(html, {
+        url,
+        virtualConsole: this.createVirtualConsole()
+      });
       const document = dom.window.document;
 
       // 使用 readability 获取元数据
