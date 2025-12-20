@@ -1,0 +1,48 @@
+{
+  "name": "md-fetch",
+  "version": "1.0.0",
+  "description": "Convert web pages to clean Markdown using fetch, readability, and turndown",
+  "type": "module",
+  "bin": {
+    "md-fetch": "./dist/index.js"
+  },
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "test": "vitest",
+    "prepublishOnly": "pnpm run build"
+  },
+  "keywords": [
+    "markdown",
+    "cli",
+    "fetch",
+    "readability",
+    "web-scraping",
+    "html-to-markdown"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "packageManager": "pnpm@9.0.0",
+  "dependencies": {
+    "@mozilla/readability": "^0.5.0",
+    "commander": "^12.0.0",
+    "jsdom": "^24.0.0",
+    "puppeteer-core": "^22.0.0",
+    "turndown": "^7.2.0",
+    "undici": "^7.16.0"
+  },
+  "devDependencies": {
+    "@types/jsdom": "^27.0.0",
+    "@types/node": "^20.0.0",
+    "@types/turndown": "^5.0.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.0",
+    "vitest": "^1.2.0"
+  }
+}
