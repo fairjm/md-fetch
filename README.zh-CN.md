@@ -2,11 +2,31 @@
 
 [English](./README.md)
 
-将网页内容转换为干净的 Markdown 格式的命令行工具。
+一套网页内容处理的命令行工具：
+- **md-fetch** - 将网页转换为干净的 Markdown 格式
+- **md-fetch-screen** - 对网页进行高质量截图
 
 ## 作者
 
 由 **Claude Code** 和 **Claude Sonnet** 开发
+
+## 目录
+
+- [md-fetch - Markdown 转换器](#md-fetch---markdown-转换器)
+  - [特性](#特性)
+  - [安装](#安装)
+  - [使用](#使用)
+  - [CLI 选项](#cli-选项)
+- [md-fetch-screen - 截图工具](#md-fetch-screen---截图工具)
+  - [截图功能](#截图功能)
+  - [截图使用方法](#截图使用方法)
+  - [截图 CLI 选项](#截图-cli-选项)
+- [技术栈](#技术栈)
+- [开发](#开发)
+
+---
+
+# md-fetch - Markdown 转换器
 
 ## 特性
 
@@ -271,6 +291,158 @@ export NO_PROXY=localhost,127.0.0.1,.example.com
 # 或通过命令行参数
 md-fetch https://example.com --proxy http://proxy.example.com:8080
 ```
+
+---
+
+# md-fetch-screen - 截图工具
+
+## 截图功能
+
+- 📸 对网页进行高质量截图
+- 🖥️ 全页截图或仅视口截图模式
+- 📐 可自定义视口尺寸（宽度/高度）
+- ✨ 支持设备像素比例，可生成高清截图（Retina 显示屏）
+- 🎨 多种图片格式（PNG、JPEG、WebP）
+- 🎯 使用 CSS 选择器截取特定元素
+- 🙈 隐藏不需要的元素（广告、弹窗等）
+- ⏱️ 可配置截图前延迟
+- 🔒 代理支持
+- 🌐 使用 Puppeteer 的无头浏览器模式
+- 📁 从 URL 和时间戳自动生成文件名
+- 🔄 批量截图多个 URL
+
+## 截图使用方法
+
+### 基本用法
+
+```bash
+# 基本截图（全页，标准分辨率）
+md-fetch-screen https://example.com
+
+# 仅视口截图，自定义尺寸
+md-fetch-screen https://example.com --viewport -W 1440 -H 900
+
+# 高清截图（2倍像素比例，适合 Retina 显示屏）
+md-fetch-screen https://example.com --scale 2
+
+# 带详细日志的截图
+md-fetch-screen https://example.com --verbose
+```
+
+### 高级用法
+
+```bash
+# 截取特定元素
+md-fetch-screen https://example.com --selector "#main-content"
+
+# 隐藏广告和弹窗
+md-fetch-screen https://example.com --hide ".ad,.popup,.cookie-banner"
+
+# JPEG 格式，自定义质量
+md-fetch-screen https://example.com --format jpeg --quality 85
+
+# 保存到指定目录
+md-fetch-screen https://example.com --output ./screenshots
+
+# 等待页面加载完成后延迟 2 秒再截图
+md-fetch-screen https://example.com --wait-until networkidle0 --delay 2000
+
+# 批量截图多个 URL
+md-fetch-screen https://site1.com https://site2.com https://site3.com
+```
+
+### 理解宽度、高度和像素比例参数
+
+**全页模式（默认）：**
+- 宽度/高度控制浏览器视口大小
+- 截图会捕获整个页面内容
+- 最终图片尺寸取决于页面的实际高度
+
+```bash
+# 全页截图，视口宽度 1920px
+md-fetch-screen https://example.com -W 1920 -H 1080
+```
+
+**视口模式：**
+- 宽度/高度直接控制截图尺寸
+- 只捕获视口内可见的内容
+
+```bash
+# 精确 1440x900 的截图
+md-fetch-screen https://example.com --viewport -W 1440 -H 900
+```
+
+**像素比例（设备像素比）：**
+- `--scale 1`（默认）：标准分辨率
+  - 视口 1920x1080 → 图片 1920x1080 像素
+- `--scale 2`：高清（Retina）
+  - 视口 1920x1080 → 图片 3840x2160 像素
+- `--scale 3`：超高清
+  - 视口 1920x1080 → 图片 5760x3240 像素
+
+```bash
+# 高质量 Retina 截图
+md-fetch-screen https://example.com --scale 2
+
+# 视口模式 + 2倍像素比例 = 2880x1800 最终图片
+md-fetch-screen https://example.com --viewport -W 1440 -H 900 --scale 2
+```
+
+## 截图 CLI 选项
+
+```
+用法: md-fetch-screen [options] <urls...>
+
+参数:
+  urls                   要截图的 URL
+
+选项:
+  -V, --version          输出版本号
+
+  视口和尺寸:
+  -f, --full-page        全页截图（默认）
+  --viewport             仅视口截图
+  -W, --width <pixels>   视口宽度（像素）（默认：1920）
+  -H, --height <pixels>  视口高度（像素）（默认：1080）
+  --scale <number>       设备像素比例，用于高清截图（1/2/3，默认：1）
+
+  输出:
+  --output <dir>         输出目录（默认："."）
+  --format <type>        图片格式：png|jpeg|webp（默认："png"）
+  --quality <number>     JPEG/WebP 质量 0-100（默认：90）
+
+  浏览器:
+  --browser-path <path>  自定义 Chrome/Chromium 可执行文件路径
+  --wait-until <event>   等待条件：load|domcontentloaded|networkidle0|networkidle2
+  --timeout <ms>         超时时间（毫秒）（默认：30000）
+  --user-agent <string>  自定义 user agent
+  --proxy <url>          代理服务器 URL
+
+  内容:
+  --delay <ms>           截图前延迟时间（毫秒）（默认：0）
+  --selector <css>       CSS 选择器，用于截取特定元素
+  --hide <selectors>     要隐藏的 CSS 选择器（逗号分隔）
+
+  其他:
+  --verbose              启用详细日志
+  -h, --help             显示帮助信息
+```
+
+### 文件名格式
+
+截图会自动使用以下格式命名：
+```
+<域名_路径_前50字符>_<时间戳>.png
+```
+
+示例：
+- `example.com_20251229153045.png`
+- `github.com_user_repo_issues_123_20251229153045.png`
+
+文件名包含：
+- 域名和路径（最多 50 个字符，已进行文件系统安全化处理）
+- 时间戳格式：`YYYYMMDDHHmmss`
+- 基于格式的文件扩展名
 
 ## 许可
 

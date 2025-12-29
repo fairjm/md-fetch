@@ -148,3 +148,80 @@ export class ValidationError extends Error {
     this.name = 'ValidationError';
   }
 }
+
+// ==================== 截图相关类型定义 ====================
+
+// 截图选项
+export interface ScreenshotOptions {
+  // 截图模式
+  fullPage: boolean;
+
+  // 视口配置
+  width: number;
+  height: number;
+  deviceScaleFactor: number; // 设备像素比例（1/2/3）
+
+  // 输出配置
+  outputDir: string;
+  format: 'png' | 'jpeg' | 'webp';
+  quality?: number; // JPEG/WebP 质量（0-100）
+
+  // 浏览器配置
+  browserOptions: BrowserOptions;
+
+  // 页面配置
+  delay?: number; // 截图前延迟（毫秒）
+  selector?: string; // 截取特定元素
+  hideSelectors?: string[]; // 隐藏的元素选择器列表
+
+  // 其他
+  verbose?: boolean;
+}
+
+// 截图 CLI 命令行选项
+export interface ScreenshotCLIOptions {
+  // 尺寸和视图
+  fullPage?: boolean;
+  viewport?: boolean;
+  width?: number;
+  height?: number;
+  scale?: number;
+
+  // 输出
+  output?: string;
+  format?: string;
+  quality?: number;
+
+  // 浏览器
+  browserPath?: string;
+  waitUntil?: string;
+  timeout?: number;
+  userAgent?: string;
+  proxy?: string;
+
+  // 内容
+  delay?: number;
+  selector?: string;
+  hide?: string;
+
+  // 其他
+  verbose?: boolean;
+}
+
+// 截图结果
+export interface ScreenshotResult {
+  url: string;
+  filepath?: string;
+  success: boolean;
+  error?: Error;
+}
+
+export class ScreenshotError extends Error {
+  constructor(
+    public url: string,
+    message: string
+  ) {
+    super(message);
+    this.name = 'ScreenshotError';
+  }
+}

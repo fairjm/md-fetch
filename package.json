@@ -4,7 +4,8 @@
   "description": "Convert web pages to clean Markdown using fetch, readability, and turndown",
   "type": "module",
   "bin": {
-    "md-fetch": "./dist/index.js"
+    "md-fetch": "./dist/index.js",
+    "md-fetch-screen": "./dist/screen.js"
   },
   "exports": {
     ".": "./dist/index.js"

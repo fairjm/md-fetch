@@ -2,11 +2,31 @@
 
 [中文文档](./README.zh-CN.md)
 
-Convert web pages to clean Markdown format using fetch, readability, and turndown.
+A suite of CLI tools for web content processing:
+- **md-fetch** - Convert web pages to clean Markdown format
+- **md-fetch-screen** - Take high-quality screenshots of web pages
 
 ## Authors
 
 Built by **Claude Code** & **Claude Sonnet**
+
+## Table of Contents
+
+- [md-fetch - Markdown Converter](#md-fetch---markdown-converter)
+  - [Features](#features)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [CLI Options](#cli-options)
+- [md-fetch-screen - Screenshot Tool](#md-fetch-screen---screenshot-tool)
+  - [Features](#screenshot-features)
+  - [Usage](#screenshot-usage)
+  - [CLI Options](#screenshot-cli-options)
+- [Tech Stack](#tech-stack)
+- [Development](#development)
+
+---
+
+# md-fetch - Markdown Converter
 
 ## Features
 
@@ -271,6 +291,158 @@ export NO_PROXY=localhost,127.0.0.1,.example.com
 # Or via command line argument
 md-fetch https://example.com --proxy http://proxy.example.com:8080
 ```
+
+---
+
+# md-fetch-screen - Screenshot Tool
+
+## Screenshot Features
+
+- 📸 Take high-quality screenshots of web pages
+- 🖥️ Full-page or viewport-only screenshot modes
+- 📐 Customizable viewport size (width/height)
+- ✨ Device scale factor support for high-DPI screenshots (Retina displays)
+- 🎨 Multiple image formats (PNG, JPEG, WebP)
+- 🎯 Screenshot specific elements using CSS selectors
+- 🙈 Hide unwanted elements (ads, popups, etc.)
+- ⏱️ Configurable delay before screenshot
+- 🔒 Proxy support
+- 🌐 Headless browser mode using Puppeteer
+- 📁 Automatic filename generation from URL and timestamp
+- 🔄 Batch screenshot multiple URLs
+
+## Screenshot Usage
+
+### Basic Usage
+
+```bash
+# Basic screenshot (full page, standard resolution)
+md-fetch-screen https://example.com
+
+# Viewport-only screenshot with custom size
+md-fetch-screen https://example.com --viewport -W 1440 -H 900
+
+# High-DPI screenshot (2x scale for Retina displays)
+md-fetch-screen https://example.com --scale 2
+
+# Screenshot with verbose logging
+md-fetch-screen https://example.com --verbose
+```
+
+### Advanced Usage
+
+```bash
+# Screenshot specific element
+md-fetch-screen https://example.com --selector "#main-content"
+
+# Hide ads and popups
+md-fetch-screen https://example.com --hide ".ad,.popup,.cookie-banner"
+
+# JPEG format with custom quality
+md-fetch-screen https://example.com --format jpeg --quality 85
+
+# Save to specific directory
+md-fetch-screen https://example.com --output ./screenshots
+
+# Wait for page to load, then delay 2 seconds
+md-fetch-screen https://example.com --wait-until networkidle0 --delay 2000
+
+# Batch screenshot multiple URLs
+md-fetch-screen https://site1.com https://site2.com https://site3.com
+```
+
+### Understanding Width, Height, and Scale
+
+**Full-Page Mode (default):**
+- Width/Height control the browser viewport size
+- The screenshot captures the entire page content
+- Final image dimensions depend on actual page height
+
+```bash
+# Full page with 1920px viewport width
+md-fetch-screen https://example.com -W 1920 -H 1080
+```
+
+**Viewport Mode:**
+- Width/Height directly control the screenshot size
+- Only captures what's visible in the viewport
+
+```bash
+# Exactly 1440x900 screenshot
+md-fetch-screen https://example.com --viewport -W 1440 -H 900
+```
+
+**Scale Factor (Device Pixel Ratio):**
+- `--scale 1` (default): Standard resolution
+  - Viewport 1920x1080 → Image 1920x1080 pixels
+- `--scale 2`: High-DPI (Retina)
+  - Viewport 1920x1080 → Image 3840x2160 pixels
+- `--scale 3`: Ultra high-DPI
+  - Viewport 1920x1080 → Image 5760x3240 pixels
+
+```bash
+# High-quality Retina screenshot
+md-fetch-screen https://example.com --scale 2
+
+# Viewport mode with 2x scale = 2880x1800 final image
+md-fetch-screen https://example.com --viewport -W 1440 -H 900 --scale 2
+```
+
+## Screenshot CLI Options
+
+```
+Usage: md-fetch-screen [options] <urls...>
+
+Arguments:
+  urls                   URLs to screenshot
+
+Options:
+  -V, --version          output the version number
+
+  Viewport & Size:
+  -f, --full-page        Full page screenshot (default)
+  --viewport             Viewport-only screenshot
+  -W, --width <pixels>   Viewport width in pixels (default: 1920)
+  -H, --height <pixels>  Viewport height in pixels (default: 1080)
+  --scale <number>       Device scale factor for high-DPI (1/2/3, default: 1)
+
+  Output:
+  --output <dir>         Output directory (default: ".")
+  --format <type>        Image format: png|jpeg|webp (default: "png")
+  --quality <number>     JPEG/WebP quality 0-100 (default: 90)
+
+  Browser:
+  --browser-path <path>  Custom Chrome/Chromium executable path
+  --wait-until <event>   Wait condition: load|domcontentloaded|networkidle0|networkidle2
+  --timeout <ms>         Timeout in milliseconds (default: 30000)
+  --user-agent <string>  Custom user agent
+  --proxy <url>          Proxy server URL
+
+  Content:
+  --delay <ms>           Delay before screenshot in ms (default: 0)
+  --selector <css>       CSS selector to screenshot specific element
+  --hide <selectors>     CSS selectors to hide (comma-separated)
+
+  Other:
+  --verbose              Enable verbose logging
+  -h, --help             display help for command
+```
+
+### Filename Format
+
+Screenshots are automatically named using the following format:
+```
+<domain_path_50chars>_<timestamp>.png
+```
+
+Examples:
+- `example.com_20251229153045.png`
+- `github.com_user_repo_issues_123_20251229153045.png`
+
+The filename includes:
+- Domain and path (up to 50 characters, sanitized for filesystem safety)
+- Timestamp in format: `YYYYMMDDHHmmss`
+- File extension based on format
 
 ## License
 
