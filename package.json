@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Convert web pages to clean Markdown using fetch, readability, and turndown",
   "type": "module",
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/fairjm/md-fetch"
+  },
   "bin": {
     "md-fetch": "./dist/index.js",
     "md-fetch-screen": "./dist/screen.js"
@@ -24,7 +28,10 @@
     "web-scraping",
     "html-to-markdown"
   ],
-  "author": "",
+  "author": {
+    "name": "fairjm",
+    "url": "https://bingowith.me"
+  },
   "license": "MIT",
   "engines": {
     "node": ">=18.0.0"
