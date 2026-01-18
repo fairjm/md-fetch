@@ -43,6 +43,23 @@
 
 ## 安装
 
+### 从 npm 安装（推荐）
+
+使用 md-fetch 最简单的方式是从 npm 全局安装：
+
+```bash
+# 使用 npm
+npm install -g md-fetch
+
+# 使用 pnpm
+pnpm add -g md-fetch
+
+# 使用 yarn
+yarn global add md-fetch
+```
+
+安装后，`md-fetch` 和 `md-fetch-screen` 两个命令都可以全局使用。
+
 ### 开发环境安装
 
 ```bash
@@ -54,7 +71,7 @@ cd md-fetch
 pnpm install
 ```
 
-### 全局安装
+### 本地开发安装
 
 **使用 pnpm:**
 

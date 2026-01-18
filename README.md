@@ -43,6 +43,23 @@ Built by **Claude Code** & **Claude Sonnet**
 
 ## Installation
 
+### Install from npm (Recommended)
+
+The easiest way to use md-fetch is to install it globally from npm:
+
+```bash
+# Using npm
+npm install -g md-fetch
+
+# Using pnpm
+pnpm add -g md-fetch
+
+# Using yarn
+yarn global add md-fetch
+```
+
+After installation, both `md-fetch` and `md-fetch-screen` commands will be available globally.
+
 ### Development Setup
 
 ```bash
@@ -54,7 +71,7 @@ cd md-fetch
 pnpm install
 ```
 
-### Global Installation
+### Local Development Installation
 
 **Using pnpm:**
 
