@@ -1,6 +1,6 @@
 {
   "name": "md-fetch",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Convert web pages to clean Markdown using fetch, readability, and turndown",
   "type": "module",
   "repository": {
