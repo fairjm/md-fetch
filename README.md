@@ -102,17 +102,34 @@ npm link
 md-fetch https://example.com
 ```
 
-### Rebuild After Code Changes
+**Rebuild after code changes:**
 
 ```bash
-# 1. Rebuild
+# Rebuild - changes take effect automatically after rebuild, no need to re-link
 pnpm build
-
-# 2. No need to re-link, changes take effect automatically
 md-fetch https://example.com
 ```
 
-### Uninstall
+## Uninstall
+
+### Uninstall npm Global Installation
+
+If you installed via `npm install -g md-fetch`:
+
+```bash
+# Using npm
+npm uninstall -g md-fetch
+
+# Using pnpm
+pnpm remove -g md-fetch
+
+# Using yarn
+yarn global remove md-fetch
+```
+
+### Uninstall Local Development Link
+
+If you installed via `npm link` or `pnpm link`:
 
 **Using pnpm:**
 
@@ -129,14 +146,6 @@ pnpm store prune
 ```bash
 # Unlink globally
 npm unlink -g md-fetch
-```
-
-**Remove project:**
-
-```bash
-# Simply delete the project directory
-cd ..
-rm -rf md-fetch  # Or use rmdir /s md-fetch on Windows
 ```
 
 ## Usage

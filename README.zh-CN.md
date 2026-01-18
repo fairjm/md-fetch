@@ -102,17 +102,34 @@ npm link
 md-fetch https://example.com
 ```
 
-### 修改代码后重新安装
+**修改代码后重新构建:**
 
 ```bash
-# 1. 重新构建
+# 重新构建后会自动生效，无需重新 link
 pnpm build
-
-# 2. 无需重新 link，构建后会自动生效
 md-fetch https://example.com
 ```
 
-### 卸载
+## 卸载
+
+### 卸载 npm 全局安装
+
+如果是通过 `npm install -g md-fetch` 安装的：
+
+```bash
+# 使用 npm
+npm uninstall -g md-fetch
+
+# 使用 pnpm
+pnpm remove -g md-fetch
+
+# 使用 yarn
+yarn global remove md-fetch
+```
+
+### 卸载本地开发链接
+
+如果是通过 `npm link` 或 `pnpm link` 安装的：
 
 **使用 pnpm:**
 
@@ -129,14 +146,6 @@ pnpm store prune
 ```bash
 # 取消全局链接
 npm unlink -g md-fetch
-```
-
-**删除项目:**
-
-```bash
-# 如果想完全删除项目，直接删除项目目录即可
-cd ..
-rm -rf md-fetch  # 或在 Windows 上使用 rmdir /s md-fetch
 ```
 
 ## 使用
